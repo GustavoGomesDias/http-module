@@ -1,0 +1,20 @@
+{
+  "name": "http-module",
+  "version": "1.0.0",
+  "description": "Tentando entender como que funciona a mágica do Express",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GustavoGomesDias/http-module.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GustavoGomesDias/http-module/issues"
+  },
+  "homepage": "https://github.com/GustavoGomesDias/http-module#readme"
+}
