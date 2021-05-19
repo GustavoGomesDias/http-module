@@ -1,11 +1,20 @@
 # Http module
-Tentando entender como que funciona a mágica do Express
+Desmitificando a mágica do Express
+
+## 📕 Sumário
 
 ###### Alguns trecos de códigos eu vou colocar aqui, caso eu queria ver novamente e ele tenha sido excluido por conta de refatoração (EXTRA 1).
 
 
 ## 1. 🗺 Roadmap?
 - [x] Fazer o server subir localmente (Hello World);
+- [ ] CRUD User
+  - [ ] GET
+  - [ ] POST
+  - [ ] PUT
+  - [ ] DELETE
+- [ ] Banco de Dados
+ - [ ] Arquivo do tipo JSON
 
 
 ## EXTRA 1 - Trechos de coódgios antigos
