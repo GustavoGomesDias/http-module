@@ -9,12 +9,16 @@ const app = http.createServer((req, res) => {
   res.writeHead(200, {
     'Content-Type': 'application/json',
   });
+
+  // Esse jeito só tem get, eu não sei por que tá aqui, mas provavelmente não vou usar
   http
-    .get('http://localhost:3000', res.write(JSON.stringify(UserController.getAllUser())))
+    .get('http://localhost:3000', res.write(UserController.getAllUser()))
     .on('error', error => {
       console.log(error);
       res.write(JSON.stringify(error));
     });
+
+    http.post()
 
   res.end();
 });
