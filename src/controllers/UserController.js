@@ -5,16 +5,16 @@ class UserController {
   getAllUser(req, res) {
     const users =  fs.readFileSync(path.join(__dirname, '../../') + 'database.json', 'utf8');
 
-    if(users != undefined) {
+    if(users) {
       return res.writeHead(200, {
         'Content-Type': 'application/json',
       })
       .write(users);
     }else {
-      return res.writeHead(404, {
+      return res.writeHead(400, {
         'Content-Type': 'application/json',
       })
-      .write({ error: 'Não há usuários cadastrados.' })
+      .write(JSON.stringify({ error: 'Não há usuários cadastrados.' }));
     }
     
   }
