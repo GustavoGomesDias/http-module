@@ -1,6 +1,5 @@
-import fs from 'fs';
-import path from 'path';
 import User from '../models/User';
+import _ from '../validations/validations';
 
 class UserController {
    getAllUser(req, res) {
@@ -22,12 +21,31 @@ class UserController {
 
   async store(req, res) {
     const infos = req.body;
-    await User.addNewInfos(infos);
 
-    return res.writeHead(200, {
-      'Content-Type': 'application/json',
-    })
-    .write(JSON.stringify({ message: "Infos. adiconada com sucesso" }));
+    const { id } = infos;
+
+    if (_.verifyIdExist(id) == false) {
+      return res.writeHead(400, {
+        'Content-Type': 'application/json',
+      })
+      .write(JSON.stringify({ message: "Este id já está em uso." }));
+    }
+
+    try {
+      await User.addNewInfos(infos);
+      
+      return res.writeHead(200, {
+        'Content-Type': 'application/json',
+      })
+      .write(JSON.stringify({ message: "Infos. adiconada com sucesso" }));
+    } catch(err) {
+      console.log(err);
+      return res.writeHead(500, {
+        'Content-Type': 'application/json',
+      })
+      .write(JSON.stringify({ message: "Não foi possível adicionar novas informações, tente novamente." }));
+    }
+    
   }
 }
 

@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import util from 'util';
 
 class User {
   returnAllInfos(){
@@ -12,7 +13,9 @@ class User {
     const objInfos =  this.returnAllInfos();
     objInfos.push(infos);
 
-    await fs.writeFileSync(path.join(__dirname, '../../') + 'database.json', JSON.stringify(objInfos));
+    const writeFile =  util.promisify(fs.writeFileSync);
+
+    await writeFile(path.join(__dirname, '../../') + 'database.json', JSON.stringify(objInfos));
   }
 }
 
