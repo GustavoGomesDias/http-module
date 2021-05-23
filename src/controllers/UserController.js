@@ -24,7 +24,7 @@ class UserController {
 
     const { id } = infos;
 
-    if (_.verifyIdExist(id) == false) {
+    if (_.verifyIdExist(id) == true) {
       return res.writeHead(400, {
         'Content-Type': 'application/json',
       })
@@ -32,6 +32,7 @@ class UserController {
     }
 
     try {
+
       await User.addNewInfos(infos);
       
       return res.writeHead(200, {
