@@ -1,15 +1,16 @@
 import fs from 'fs';
 import path from 'path';
+import User from '../models/User';
 
 class UserController {
-  getAllUser(req, res) {
-    const users =  fs.readFileSync(path.join(__dirname, '../../') + 'database.json', 'utf8');
+   getAllUser(req, res) {
+    const users =  User.returnAllInfos();
 
     if(users) {
       return res.writeHead(200, {
         'Content-Type': 'application/json',
       })
-      .write(users);
+      .write(JSON.stringify(users));
     }else {
       return res.writeHead(400, {
         'Content-Type': 'application/json',
@@ -19,24 +20,14 @@ class UserController {
     
   }
 
-   store(req, res) {
+  async store(req, res) {
     const infos = req.body;
-     fs.writeFile(path.join(__dirname, '../../') + 'database.json', JSON.stringify(infos), { flag: 'a' },  (err) => {
-      if (err) {
-        console.log(err);
-        
-        return res.writeHead(500, {
-          'Content-Type': 'application/json',
-        })
-        .write(JSON.stringify({ message: "Erro ao adicionar as informações, tente novamente mais tarde." }));
-      }
+    await User.addNewInfos(infos);
 
-      return res.writeHead(200, {
-        'Content-Type': 'application/json',
-      })
-      .write(JSON.stringify({ message: "Infos. adiconada com sucesso" }));
-
-    });
+    return res.writeHead(200, {
+      'Content-Type': 'application/json',
+    })
+    .write(JSON.stringify({ message: "Infos. adiconada com sucesso" }));
   }
 }
 
