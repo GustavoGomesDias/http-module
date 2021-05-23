@@ -1,24 +1,30 @@
 import http, { request } from 'http';
 import UserController from './src/controllers/UserController';
-import User from './src/routes/User';
 
 const port = 3000; // || process.env.PORT;
 
-const agent = new Agent();
-
 const app = http.createServer((req, res) => {
   const { method } = req;
-  
-  const host = agent.getName(app).slice(0, agent.getName(app).length - 1);
-  console.log(host);
 
   if (method === 'GET'){    
-    request('localhost:3000/teste', UserController.getAllUser(req, res));
+    request('http://localhost:3000/teste', UserController.getAllUser(req, res));
+    res.end();
   }
+  
+  if (method === 'POST'){
+    const chunks = [];
+    req.on('data', chunk => {
+      chunks.push(chunk)
+    });
 
-  res.end();
+    req.on('end', function()  {
+      const data = Buffer.concat(chunks);
+      req.body = JSON.parse(data.toString());
+      request('http://localhost:3000/teste', UserController.show(req, res));
+    });
 
-  User(req, res);
+    res.end();
+  }
 });
 
 app.listen(port, () => {

@@ -19,10 +19,14 @@ class UserController {
     
   }
 
-  // show(name, lastname, email, github) {
-
-
-  // }
+  show(req, res) {
+    const teste = req.body;
+    console.log(teste);
+    return res.writeHead(200, {
+      'Content-Type': 'application/json',
+    })
+    .write(JSON.stringify(teste));
+  }
 }
 
 export default new UserController();  
