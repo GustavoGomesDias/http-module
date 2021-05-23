@@ -1,16 +1,1 @@
-[
-  {
-    "id": 2,
-    "name": "Gustavo",
-    "lastName": "Gomes",
-    "email": "email@email.com",
-    "github": "www.github/GustavoGomesDias"
-  },
-  {
-    "id": 3,
-    "name": "Gustavo",
-    "lastName": "Gomes",
-    "email": "email@email.com",
-    "github": "www.github/GustavoGomesDias"
-  }
-]
+[{"id":2,"name":"Gustavo","lastName":"Gomes","email":"email@email.com","github":"www.github/GustavoGomesDias"},{"id":6,"name":"Gustavo","lastName":"Gomes","email":"email@email.com","github":"www.github/GustavoGomesDias"}]

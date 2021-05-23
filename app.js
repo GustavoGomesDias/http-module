@@ -17,12 +17,14 @@ const app = http.createServer((req, res) => {
       chunks.push(chunk)
     });
 
-    req.on('end', function()  {
+    req.on('end', async function()  {
       const data = Buffer.concat(chunks);
       req.body = JSON.parse(data.toString());
-      request('http://localhost:3000/teste', UserController.store(req, res));
+      request('http://localhost:3000/teste', await UserController.store(req, res));
       res.end();
     });
+
+    res.end();
   }
 });
 
@@ -30,5 +32,3 @@ app.listen(port, () => {
   
   console.log(`Server rodando na porta ${port}`);
 });
-
-export default app;
