@@ -1,8 +1,7 @@
-[
-  {
-    "name": "Gustavo",
-    "lastName": "Dias",
-    "email": "exemple@exemple.com",
-    "github": "www.github/GustavoGomesDias"
-  }
-]
+{
+  "id": 1,
+  "name": "Gustavo",
+  "lastName": "Dias",
+  "email": "exemple@exemple.com",
+  "github": "www.github/GustavoGomesDias"
+}

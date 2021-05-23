@@ -19,13 +19,24 @@ class UserController {
     
   }
 
-  show(req, res) {
-    const teste = req.body;
-    console.log(teste);
-    return res.writeHead(200, {
-      'Content-Type': 'application/json',
-    })
-    .write(JSON.stringify(teste));
+   store(req, res) {
+    const infos = req.body;
+     fs.writeFile(path.join(__dirname, '../../') + 'database.json', JSON.stringify(infos), { flag: 'a' },  (err) => {
+      if (err) {
+        console.log(err);
+        
+        return res.writeHead(500, {
+          'Content-Type': 'application/json',
+        })
+        .write(JSON.stringify({ message: "Erro ao adicionar as informações, tente novamente mais tarde." }));
+      }
+
+      return res.writeHead(200, {
+        'Content-Type': 'application/json',
+      })
+      .write(JSON.stringify({ message: "Infos. adiconada com sucesso" }));
+
+    });
   }
 }
 

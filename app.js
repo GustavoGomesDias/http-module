@@ -20,10 +20,9 @@ const app = http.createServer((req, res) => {
     req.on('end', function()  {
       const data = Buffer.concat(chunks);
       req.body = JSON.parse(data.toString());
-      request('http://localhost:3000/teste', UserController.show(req, res));
+      request('http://localhost:3000/teste', UserController.store(req, res));
+      res.end();
     });
-
-    res.end();
   }
 });
 
