@@ -19,34 +19,17 @@ class UserController {
     
   }
 
-  async store(req, res) {
+  store(req, res) {
     const infos = req.body;
-
     const { id } = infos;
 
-    if (_.verifyIdExist(id) == true) {
-      return res.writeHead(400, {
-        'Content-Type': 'application/json',
-      })
-      .write(JSON.stringify({ message: "Este id já está em uso." }));
-    }
-
-    try {
-
-      await User.addNewInfos(infos);
-      
-      return res.writeHead(200, {
-        'Content-Type': 'application/json',
-      })
-      .write(JSON.stringify({ message: "Infos. adiconada com sucesso" }));
-    } catch(err) {
-      console.log(err);
-      return res.writeHead(500, {
-        'Content-Type': 'application/json',
-      })
-      .write(JSON.stringify({ message: "Não foi possível adicionar novas informações, tente novamente." }));
-    }
-    
+    return _.verifyIdExist(id) ? res.writeHead(400, {
+      'Content-Type': 'application/json',
+    }).write(JSON.stringify({ error: 'Id em uso.' }))
+    :
+    res.writeHead(200, {
+      'Content-Type': 'application/json',
+    }).write(JSON.stringify({ message: 'Usuário cadastrado.' }));
   }
 }
 

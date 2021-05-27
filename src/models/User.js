@@ -9,13 +9,18 @@ class User {
     return infos;
   }
 
-  async addNewInfos(infos) {
+  addNewInfos(infos) {
     const objInfos =  this.returnAllInfos();
     objInfos.push(infos);
 
-    const writeFile =  util.promisify(fs.writeFileSync);
+    // const writeFile =  util.promisify(fs.writeFileSync);
 
-    await writeFile(path.join(__dirname, '../../') + 'database.json', JSON.stringify(objInfos));
+    fs.writeFile(path.join(__dirname, '../../') + 'database.json', JSON.stringify(objInfos), (err) => {
+      if (err) {
+        return err;
+      }
+      return undefined;
+    });
   }
 }
 

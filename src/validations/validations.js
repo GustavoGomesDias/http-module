@@ -5,8 +5,6 @@ function verifyIdExist(id) {
 
   const verify = infos.find(info => info.id == id);
 
-  console.log(verify);
-
   if (verify) {
     return true;
   } else {

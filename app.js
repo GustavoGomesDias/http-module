@@ -1,5 +1,6 @@
 import http, { request } from 'http';
 import UserController from './src/controllers/UserController';
+import User from './src/models/User';
 
 const port = 3000; // || process.env.PORT;
 
@@ -17,21 +18,14 @@ const app = http.createServer((req, res) => {
       chunks.push(chunk)
     });
 
-    req.on('end', async function()  {
+    req.on('end', function()  {
       const data = Buffer.concat(chunks);
       req.body = JSON.parse(data.toString());
-
-      const teste = await (new Promise((resolve, reject) => {
-        request('http://localhost:3000/teste', (err) => {
-          if (err) reject(err);
-          else resolve(UserController.store);
-        });
-      }));
-
-      teste.then(func => func(req, res));
+      UserController.store(req, res);
       res.end();
     });
   }
+
 });
 
 app.listen(port, () => {
