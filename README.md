@@ -7,7 +7,7 @@ Desmitificando a mágica do Express
 - [x] Fazer o server subir localmente (Hello World);
 - [ ] CRUD User
   - [x] GET
-  - [ ] POST
+  - [x] POST
   - [ ] PUT
   - [ ] DELETE
 - [x] Banco de Dados
