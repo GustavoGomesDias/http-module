@@ -44,7 +44,7 @@ class UserController {
       return res.writeHead(500, {
         'Content-Type': 'application/json',
       })
-      .end(JSON.stringify({ message: "Não foi possível adicionar novas informações, tente novamente." }));
+      .write(JSON.stringify({ message: "Não foi possível adicionar novas informações, tente novamente." }));
     }
     
   }

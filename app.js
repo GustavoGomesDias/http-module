@@ -20,11 +20,17 @@ const app = http.createServer((req, res) => {
     req.on('end', async function()  {
       const data = Buffer.concat(chunks);
       req.body = JSON.parse(data.toString());
-      request('http://localhost:3000/teste', await UserController.store(req, res));
+
+      const teste = await (new Promise((resolve, reject) => {
+        request('http://localhost:3000/teste', (err) => {
+          if (err) reject(err);
+          else resolve(UserController.store);
+        });
+      }));
+
+      teste.then(func => func(req, res));
       res.end();
     });
-
-    res.end();
   }
 });
 
