@@ -1,7 +1,7 @@
-import User from '../models/User';
+import Contact from '../models/Contact';
 
 function verifyIdExist(id) {
-  const infos = User.returnAllInfos();
+  const infos = Contact.returnAllInfos();
 
   const verify = infos.find(info => info.id == id);
 

@@ -5,7 +5,7 @@ Desmitificando a mágica do Express
 
 ## 1. 🗺 Roadmap?
 - [x] Fazer o server subir localmente (Hello World);
-- [ ] CRUD User
+- [ ] CRUD Contact
   - [x] GET
   - [x] POST
   - [ ] PUT
