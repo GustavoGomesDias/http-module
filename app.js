@@ -1,14 +1,13 @@
 import http, { request } from 'http';
-import UserController from './src/controllers/UserController';
-import User from './src/models/User';
+import ContactController from './src/controllers/Contact';
 
-const port = 3000; // || process.env.PORT;
+const port = 3000;
 
 const app = http.createServer((req, res) => {
   const { method } = req;
 
   if (method === 'GET'){    
-    request('http://localhost:3000/teste', UserController.getAllUser(req, res));
+    request('http://localhost:3000/teste', ContactController.getAllContact(req, res));
     res.end();
   }
   
@@ -21,7 +20,7 @@ const app = http.createServer((req, res) => {
     req.on('end', function()  {
       const data = Buffer.concat(chunks);
       req.body = JSON.parse(data.toString());
-      UserController.store(req, res);
+      ContactController.store(req, res);
       res.end();
     });
   }
