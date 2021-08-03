@@ -6,18 +6,26 @@ import {
 } from '../validations/validations.js';
 
 class ContactController {
+  repo
+
+  constructor() {
+    this.repo = new Contact();
+  }
+
   async getAllContact(req, res) {
     try {
-      const contacts = await Contact.getAllContact();
-
-      if (contacts) {
+      const contacts = await this.repo.getAllContacts();
+      console.log(contacts.length);
+      if (contacts.length > 0) {
+        
         return res.writeHead(200, {
           'Content-Type': 'application/json',
         }).write(JSON.stringify(contacts));
       } else {
+        console.log('entrou')
         return res.writeHead(400, {
           'Content-Type': 'application/json',
-        }).write(JSON.stringify({ error: 'Não há usuários cadastrados.' }));
+        }).write(JSON.stringify({ message: 'Não há usuários cadastrados.' }));
       }
     } catch (err) {
       console.log(err);
@@ -29,9 +37,27 @@ class ContactController {
 
   async store(req, res) {
     try {
-      const contact = req.body;
+      const { name, email, github} = req.body;
 
-      await Contact.addNewContact(contact);
+      if (validateFiled(name), validateFiled(email), validateFiled(github)) {
+        return res.writeHead(400, {
+          'Content-Type': 'application/json',
+        }).write(JSON.stringify({ error: 'Nome, email e o usuário do GitHub são obrigatórios.' }));
+      }
+
+      if (validateEmail(email)) {
+        return res.writeHead(400, {
+          'Content-Type': 'application/json',
+        }).write(JSON.stringify({ error: 'E-mail inválido.' }));
+      }
+
+      if (validateGitHub(github)) {
+        return res.writeHead(400, {
+          'Content-Type': 'application/json',
+        }).write(JSON.stringify({ error: 'Usário do GitHub não existe.' }));
+      }
+
+      await Contact.addNewContact(req.body);
 
       res.writeHead(200, {
         'Content-Type': 'application/json',

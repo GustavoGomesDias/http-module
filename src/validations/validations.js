@@ -20,7 +20,7 @@ export const validateGitHub = async (gitHubUser) => {
   };
 
   try {
-    const teste = await new Promise((resolve, reject) => {
+    await new Promise((resolve, reject) => {
       https.get(options, (res) => {
         let data = '';
         res.on('data', (chunk) => {

@@ -6,7 +6,7 @@ export default class ContactRepo {
   async getAllContacts () {
     try {
       const contacts = JSON.parse(
-        await fs.readFile(new URL('../../../database.json', import.meta.url), 'utf8')
+        await fs.readFile(new URL('../../database.json', import.meta.url), 'utf8')
       );
       return contacts;
     } catch (err) {

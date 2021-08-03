@@ -1,4 +1,4 @@
-import fs from 'fs/promises';
+import fs from 'fs';
 
 export default class Contact {
   id;
@@ -12,9 +12,9 @@ export default class Contact {
 
   #contactList;
 
-  async constructor({ id = this.#contactList.length + 1, name, lastName, description, email, github }) {
+  constructor({ id = this.#contactList.length + 1, name, lastName, description, email, github }) {
     this.#contactList = JSON.parse(
-      await fs.readFile(new URL('../../../database.json', import.meta.url), 'utf8')
+      fs.readFile(new URL('../../database.json', import.meta.url), 'utf8')
     );
     this.id = id;
     this.name = name;
