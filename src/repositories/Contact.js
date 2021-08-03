@@ -1,5 +1,5 @@
 import fs from 'fs/promises';
-import Contact from '../models/Contact';
+import Contact from '../models/Contact.js';
 
 export default class ContactRepo {
 

@@ -1,5 +1,5 @@
 import http, { request } from 'http';
-import ContactController from './src/controllers/Contact';
+import ContactController from './src/controllers/Contact.js';
 
 const port = 3000;
 
@@ -13,7 +13,7 @@ const app = http.createServer((req, res) => {
   
   if (method === 'POST'){
     const chunks = [];
-    req.on('data', chunk => {
+    req.on('data', (chunk) => {
       chunks.push(chunk)
     });
 

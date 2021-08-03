@@ -1,43 +1,40 @@
-import Contact from '../repositories/Contact';
-import { verifyIdExist } from '../validations/validations';
+import Contact from '../repositories/Contact.js';
+import { verifyIdExist } from '../validations/validations.js';
 
 class ContactController {
   async getAllContact(req, res) {
-    const contacts = await Contact.getAllContact();
+    try {
+      const contacts = await Contact.getAllContact();
 
-    if (contacts) {
-      return res.writeHead(200, {
+      if (contacts) {
+        return res.writeHead(200, {
+          'Content-Type': 'application/json',
+        }).write(JSON.stringify(contacts));
+      } else {
+        return res.writeHead(400, {
+          'Content-Type': 'application/json',
+        }).write(JSON.stringify({ error: 'Não há usuários cadastrados.' }));
+      }
+    } catch (err) {
+      console.log(err);
+      return res.writeHead(500, {
         'Content-Type': 'application/json',
-      })
-        .write(JSON.stringify(contacts));
-    } else {
-      return res.writeHead(400, {
-        'Content-Type': 'application/json',
-      })
-        .write(JSON.stringify({ error: 'Não há usuários cadastrados.' }));
+      }).write(JSON.stringify({ error: 'Error interno.' }));
     }
-
   }
 
   async store(req, res) {
     try {
-      const infos = req.body;
-      const { id } = infos;
+      const contact = req.body;
 
-      if (verifyIdExist(id)) {
-        return res.writeHead(400, {
-          'Content-Type': 'application/json',
-        }).write(JSON.stringify({ error: 'Id em uso.' }));
-      }
-
-      await Contact.addNewContact(infos);
+      await Contact.addNewContact(contact);
 
       res.writeHead(200, {
         'Content-Type': 'application/json',
       }).write(JSON.stringify({ message: 'Usuário cadastrado.' }));
 
     } catch (err) {
-      console.log(error);
+      console.log(err);
       return res.writeHead(500, {
         'Content-Type': 'application/json',
       }).write(JSON.stringify({ error: 'Error interno.' }));
