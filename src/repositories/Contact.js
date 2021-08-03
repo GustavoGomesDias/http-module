@@ -17,9 +17,12 @@ export default class ContactRepo {
 
   async addNewContact(contact) {
     try {
-      const newContact = new Contact(contact);
+      const contacts = await this.getAllContacts();
+      const newContact = new Contact(contacts.length + 1, contact);
 
-      await fs.writeFile(new URL('../database/database.json', import.meta.url), newContact);
+      contacts.push(newContact);
+
+      await fs.writeFile(new URL('../../database.json', import.meta.url), JSON.stringify(contacts));
 
       return contact;
     } catch (error) {

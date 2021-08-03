@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon app.js --ignore database.json",
-    "test": "jest --coverage --no-cache --detectOpenHandles"
+    "test": "jest --coverage --detectOpenHandles"
   },
   "repository": {
     "type": "git",

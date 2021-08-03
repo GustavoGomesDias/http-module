@@ -1,5 +1,6 @@
 jest.mock('http');
 const http = require('http');
+const { promisify } = require('util');
 const { request } = jest.requireActual('http');
 
 const contact = {
@@ -10,41 +11,49 @@ const contact = {
   github: 'GustavoGomesDias'
 }
 
-describe("Create User", () => {
-  test("Shoud be create a user", async () => {
-    // const agent = https.Agent({
-    //   keepAlive: true,
-    //   maxSockets: Infinity
-    // });
+describe("CRUD Contacts", (done) => {
+  test("Shoud be create a new contact", async () => {
+    const agent = http.Agent({
+      keepAlive: true,
+      maxSockets: Infinity
+    });
+
     const options = {
+      agent: agent,
       hostname: 'localhost',
       port: 3000,
       method: 'POST',
       path: '/',
-      body: JSON.stringify(contact),
       headers: {
         'Content-Type': 'application/json',
         'Content-Length': Buffer.byteLength(JSON.stringify(contact))
       }
     }
-    try {
-      await new Promise((resolve, reject) => {
-        request(options, (res) => {
-          let data = '';
-          res.on('data', (chunk) => {
-            data += chunk;
-          });
-      
-          res.on('end', () => {
-            console.log(JSON.parse(data));
-            const { message } = JSON.parse(data)
-            expect(message).toEqual('Usuário cadastrado.');
-            resolve();
-          });
-        }).on("error", reject).end();
+
+    const response = new Promise((resolve, reject) => {
+      const req = request(options, (res) => {
+        res.setEncoding('utf8');
+        let data = '';
+        res.on('data', (chunk) => {
+          data += chunk;
+        });
+        res.on('end', () => {
+          const { message } = JSON.parse(data);
+          resolve(message);
+        });
+      }).on('error', (e) => {
+        console.error(`problem with request: ${e.message}`);
+        reject(e);
       });
-    } catch(err) {
-      fail(err);
-    }
+  
+      req.write(JSON.stringify(contact));
+      req.end()
+    });
+
+    const msg = await response.then((msg) => msg).catch((err) => done(err))
+
+    console.log(msg);
+
+    expect(msg).toEqual('Usuário cadastrado.');
   });
-})
+});

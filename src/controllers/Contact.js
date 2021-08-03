@@ -22,7 +22,6 @@ class ContactController {
           'Content-Type': 'application/json',
         }).write(JSON.stringify(contacts));
       } else {
-        console.log('entrou')
         return res.writeHead(400, {
           'Content-Type': 'application/json',
         }).write(JSON.stringify({ message: 'Não há usuários cadastrados.' }));
@@ -45,19 +44,19 @@ class ContactController {
         }).write(JSON.stringify({ error: 'Nome, email e o usuário do GitHub são obrigatórios.' }));
       }
 
-      if (validateEmail(email)) {
+      if (!validateEmail(email)) {
         return res.writeHead(400, {
           'Content-Type': 'application/json',
         }).write(JSON.stringify({ error: 'E-mail inválido.' }));
       }
 
-      if (validateGitHub(github)) {
+      if (!validateGitHub(github)) {
         return res.writeHead(400, {
           'Content-Type': 'application/json',
         }).write(JSON.stringify({ error: 'Usário do GitHub não existe.' }));
       }
 
-      await Contact.addNewContact(req.body);
+      await this.repo.addNewContact(req.body);
 
       res.writeHead(200, {
         'Content-Type': 'application/json',
@@ -65,7 +64,7 @@ class ContactController {
 
     } catch (err) {
       console.log(err);
-      return res.writeHead(500, {
+      res.writeHead(500, {
         'Content-Type': 'application/json',
       }).write(JSON.stringify({ error: 'Error interno.' }));
     }

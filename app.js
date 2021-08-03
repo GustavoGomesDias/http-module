@@ -3,24 +3,25 @@ import ContactController from './src/controllers/Contact.js';
 
 const port = 3000;
 
-const app = http.createServer((req, res) => {
+const app = http.createServer(async (req, res) => {
   const { method } = req;
 
   if (method === 'GET'){    
-    request('http://localhost:3000/teste', ContactController.getAllContact(req, res));
+    request('http://localhost:3000', await ContactController.getAllContact(req, res));
     res.end();
   }
   
   if (method === 'POST'){
     const chunks = [];
     req.on('data', (chunk) => {
-      chunks.push(chunk)
+      chunks.push(chunk);
     });
 
-    req.on('end', function()  {
+
+    req.on('end', async () => {
       const data = Buffer.concat(chunks);
       req.body = JSON.parse(data.toString());
-      ContactController.store(req, res);
+      await ContactController.store(req, res);
       res.end();
     });
   }
