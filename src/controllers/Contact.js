@@ -1,5 +1,9 @@
 import Contact from '../repositories/Contact.js';
-import { verifyIdExist } from '../validations/validations.js';
+import {
+  validateEmail,
+  validateFiled,
+  validateGitHub
+} from '../validations/validations.js';
 
 class ContactController {
   async getAllContact(req, res) {

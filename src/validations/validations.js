@@ -38,6 +38,7 @@ export const validateGitHub = async (gitHubUser) => {
 
     return true;
   } catch (err) {
+    console.log(err);
     return false;
   }
 }
