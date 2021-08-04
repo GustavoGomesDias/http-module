@@ -37,7 +37,6 @@ describe("CRUD Contacts", (done) => {
           data += chunk;
         });
         res.on('end', () => {
-          console.log(data);
           resolve({ statusCode: res.statusCode, data: data});
         });
       }).on('error', (e) => {
@@ -94,5 +93,48 @@ describe("CRUD Contacts", (done) => {
     const msg = await response.then((msg) => msg).catch((err) => done(err));
 
     expect(msg).toEqual('Usuário cadastrado.');
+  });
+
+  test("Should delete a contac by id", async () => {
+    const agent = http.Agent({
+      keepAlive: true,
+      maxSockets: Infinity
+    });
+
+    const options = {
+      agent: agent,
+      hostname: 'localhost',
+      port: 3000,
+      method: 'POST',
+      path: '/',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(JSON.stringify({ id: 1 }))
+      }
+    }
+
+    const response = new Promise((resolve, reject) => {
+      const req = request(options, (res) => {
+        res.setEncoding('utf8');
+        let data = '';
+        res.on('data', (chunk) => {
+          data += chunk;
+        });
+        res.on('end', () => {
+          const { message } = JSON.parse(data);
+          resolve(message);
+        });
+      }).on('error', (e) => {
+        console.error(`problem with request: ${e.message}`);
+        reject(e);
+      });
+  
+      req.write(JSON.stringify({ id: 1 }));
+      req.end()
+    });
+
+    const msg = await response.then((msg) => msg).catch((err) => done(err));
+
+    expect(msg).toEqual('Usuário deletado.');
   });
 });
