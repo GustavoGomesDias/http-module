@@ -12,17 +12,16 @@ class ContactController {
     this.repo = new Contact();
   }
 
-  async getAllContact(req, res) {
+  async getAll(req, res) {
     try {
       const contacts = await this.repo.getAllContacts();
-      console.log(contacts.length);
       if (contacts.length > 0) {
         
         return res.writeHead(200, {
           'Content-Type': 'application/json',
         }).write(JSON.stringify(contacts));
       } else {
-        return res.writeHead(400, {
+        return res.writeHead(404, {
           'Content-Type': 'application/json',
         }).write(JSON.stringify({ message: 'Não há usuários cadastrados.' }));
       }
@@ -58,19 +57,38 @@ class ContactController {
 
       await this.repo.addNewContact(req.body);
 
-      res.writeHead(200, {
+      return res.writeHead(201, {
         'Content-Type': 'application/json',
-      }).write(JSON.stringify({ message: 'Usuário cadastrado.' }));
+      }).write(JSON.stringify({ message: 'Contato cadastrado com sucesso.' }));
 
     } catch (err) {
       console.log(err);
-      res.writeHead(500, {
+      return res.writeHead(500, {
         'Content-Type': 'application/json',
       }).write(JSON.stringify({ error: 'Error interno.' }));
     }
   }
 
+  async delete(req, res) {
+    try {
+      const contacts = await this.repo.deleteContact(req.body.id);
 
+      if (!contacts) {
+        return res.writeHead(404, {
+          'Content-Type': 'application/json',
+        }).write(JSON.stringify({ message: 'Contato não encontrado.' }));
+      }
+
+      return res.writeHead(200, {
+        'Content-Type': 'application/json',
+      }).write(JSON.stringify({ message: 'Contato deletado com sucesso.' }));
+    } catch(err) {
+      console.log(err);
+      return res.writeHead(500, {
+        'Content-Type': 'application/json',
+      }).write(JSON.stringify({ error: 'Error interno.' }));
+    }
+  }
 }
 
 export default new ContactController();

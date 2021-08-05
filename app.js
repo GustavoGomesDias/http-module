@@ -6,12 +6,12 @@ const port = 3000;
 const app = http.createServer(async (req, res) => {
   const { method } = req;
 
-  if (method === 'GET'){    
-    request('http://localhost:3000', await ContactController.getAllContact(req, res));
+  if (method === 'GET') {
+    await ContactController.getAll(req, res);
     res.end();
   }
-  
-  if (method === 'POST'){
+
+  if (method === 'POST') {
     const chunks = [];
     req.on('data', (chunk) => {
       chunks.push(chunk);
@@ -26,9 +26,24 @@ const app = http.createServer(async (req, res) => {
     });
   }
 
+  if (method === 'DELETE') {
+    console.log("Entrou!!!");
+    const chunks = [];
+    req.on('data', (chunk) => {
+      chunks.push(chunk);
+    });
+
+    req.on('end', async () => {
+      const data = Buffer.concat(chunks);
+      req.body = JSON.parse(data.toString());
+      await ContactController.delete(req, res);
+      res.end();
+    });
+  }
+
 });
 
 app.listen(port, () => {
-  
+
   console.log(`Server rodando na porta ${port}`);
 });
