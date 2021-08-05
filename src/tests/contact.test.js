@@ -176,7 +176,7 @@ describe("CRUD Contacts", (done) => {
   //   expect(msg).toEqual('Contato cadastrado com sucesso.');
   // });
 
-  // test("Should delete a contac by id", async (done) => {
+  // test("Should delete a contact by id", async (done) => {
   //   const agent = http.Agent({
   //     keepAlive: true,
   //     maxSockets: Infinity
