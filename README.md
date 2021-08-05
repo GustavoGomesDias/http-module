@@ -36,7 +36,6 @@ Desmitificando a mágica do Express
 - Jest
 
 ## Autor
-## Autor
 <table>
   <tr>
     <td align="center"><a href="https://github.com/GustavoGomesDias"><img src="https://github.com/GustavoGomesDias.png" width="100px;" alt="Profile"/><br /><sub><b>Gustavo</b></sub></a><br /><a href="https://github.com/GustavoGomesDias" title="Code">😎</a></td>
