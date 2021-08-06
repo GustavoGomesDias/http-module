@@ -2,8 +2,12 @@
 Desmitificando a mágica do Express
 
 ## 📕 Sumário
+1. [Roadmap](https://github.com/GustavoGomesDias/http-module#1--roadmap)
+2. [Tecnologias usadas](https://github.com/GustavoGomesDias/http-module#2-tecnologias-usadas)
+3. [Como rodar](https://github.com/GustavoGomesDias/http-module#3-como-rodar)
 
-## 1. 🗺 Roadmap?
+
+## 1. 🗺 Roadmap
 - [x] Fazer o server subir localmente (Hello World);
 
 ---
@@ -30,10 +34,22 @@ Desmitificando a mágica do Express
 - [ ] Refatoração
   - [ ] TypeScrypt
   - [ ] Usar mongo ou algum banco de dados SQL sem ORM
+  - [ ] SwaggerAPI (OpenAPI)
 
-## 2. Teccnologias usadas
+## 2. Tecnologias usadas
 - Node
 - Jest
+
+## 3. Como rodar
+1. Para rodar localmente, você precisará de uma ferramente de teste de requisições como o [Postman](https://www.postman.com/) ou [Insomnia](https://insomnia.rest/):
+```bash
+npm run dev
+```
+2. Para rodar os testes, você precisará instalar o Jest primeiro:
+```bash
+npm install
+```
+3. Agora basta rodar o comando `npm run test` e o resultado será demonstrado.
 
 ## Autor
 <table>
