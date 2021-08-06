@@ -19,7 +19,6 @@ export default class ContactRepo {
     try {
       const contacts = await this.getAllContacts();
       const id = contacts.length > 0 ? contacts[contacts.length - 1].id + 1 : 1;
-      console.log(id);
       const newContact = new Contact(id, contact);
 
       contacts.push(newContact);
@@ -33,6 +32,35 @@ export default class ContactRepo {
     }
   }
 
+  async editContact(infos) {
+    try {
+      const { id, name = "", lastName = "", description = "", email = "", github = "" } = infos;
+
+      const contacts = await this.getAllContacts();
+      const index = contacts.map((contact) => contact.id).indexOf(id);
+      if (contacts[index]) {
+        if (name !== "" && contacts[index].name !== name) contacts[index].name = name;
+
+        if (lastName !== "" && contacts[index].lastName !== lastName) contacts[index].lastName = lastName;
+
+        if (description !== "" && contacts[index].description !== description) contacts[index].description = description;
+
+        if (email !== "" && contacts[index].email !== email) contacts[index].email = email;
+
+        if (github !== "" && contacts[index].github !== github) contacts[index].github = github;
+
+        await fs.writeFile(new URL('../../database.json', import.meta.url), JSON.stringify(contacts));
+
+        return contacts[index];
+      } else {
+        return undefined
+      }
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  }
+
   async deleteContact(id) {
     try {
       const contacts = await this.getAllContacts();
@@ -40,7 +68,7 @@ export default class ContactRepo {
 
       if (contact !== -1) {
         contacts.splice(contact, 1);
-        
+
         await fs.writeFile(new URL('../../database.json', import.meta.url), JSON.stringify(contacts));
 
         return contacts;

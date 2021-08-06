@@ -1,4 +1,4 @@
-import http, { request } from 'http';
+import http from 'http';
 import ContactController from './src/controllers/Contact.js';
 
 const port = 3000;
@@ -27,7 +27,6 @@ const app = http.createServer(async (req, res) => {
   }
 
   if (method === 'DELETE') {
-    console.log("Entrou!!!");
     const chunks = [];
     req.on('data', (chunk) => {
       chunks.push(chunk);
@@ -41,9 +40,22 @@ const app = http.createServer(async (req, res) => {
     });
   }
 
+  if (method === 'PUT') {
+    const chunks = [];
+    req.on('data', (chunk) => {
+      chunks.push(chunk);
+    });
+
+    req.on('end', async () => {
+      const data = Buffer.concat(chunks);
+      req.body = JSON.parse(data.toString());
+      await ContactController.update(req, res);
+      res.end();
+    });
+  }
+
 });
 
 app.listen(port, () => {
-
   console.log(`Server rodando na porta ${port}`);
 });

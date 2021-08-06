@@ -1,11 +1,24 @@
 jest.mock('http');
 const http = require('http');
 const { request } = jest.requireActual('http');
+const { fail } = require('jest');
+const fs = require('fs/promises');
+
+jest.setTimeout(6000);
 
 const contact = {
   name: 'Gustavo',
   lastName: 'Dias',
   description: 'Na procura eterna da primeira oportunidade!',
+  email: 'email@emaal.com',
+  github: 'GustavoGomesDias'
+}
+
+const contactUpdate = {
+  id: 1,
+  name: 'Gustavo Gomes',
+  lastName: 'Dias',
+  description: 'Ainda na procura eterna da primeira oportunidade!',
   email: 'email@emaal.com',
   github: 'GustavoGomesDias'
 }
@@ -28,26 +41,31 @@ beforeAll(async () => {
     }
   }
 
-  const response = new Promise((resolve, reject) => {
-    const req = request(options, (res) => {
-      res.setEncoding('utf8');
-      let data = '';
-      res.on('data', (chunk) => {
-        data += chunk;
+  const response = () => {
+    return new Promise((resolve, reject) => {
+      const req = request(options, (res) => {
+        res.setEncoding('utf8');
+        let data = '';
+        res.on('data', (chunk) => {
+          data += chunk;
+        });
+        res.on('end', () => {
+          const { message } = JSON.parse(data);
+          resolve(message);
+        });
+      }).on('error', (e) => {
+        reject(e);
       });
-      res.on('end', () => {
-        const { message } = JSON.parse(data);
-        resolve(message);
-      });
-    }).on('error', (e) => {
-      console.error(`problem with request: ${e.message}`);
-      reject(e);
-    });
 
-    req.write(JSON.stringify(contact));
-    req.end()
-  });
-  await response.then((msg) => msg).catch((err) => err);
+      req.write(JSON.stringify(contact));
+      req.end()
+    });
+  }
+  try {
+    await response();
+  } catch (err) {
+    fail(err);
+  }
 });
 
 afterAll(async () => {
@@ -68,31 +86,35 @@ afterAll(async () => {
     }
   }
 
-  const response = new Promise((resolve, reject) => {
-    const req = request(options, (res) => {
-      res.setEncoding('utf8');
-      let data = '';
-      res.on('data', (chunk) => {
-        data += chunk;
+  const response = () => {
+    return new Promise((resolve, reject) => {
+      const req = request(options, (res) => {
+        res.setEncoding('utf8');
+        let data = '';
+        res.on('data', (chunk) => {
+          data += chunk;
+        });
+        res.on('end', () => {
+          const { message } = JSON.parse(data);
+          resolve(message);
+        });
+      }).on('error', (e) => {
+        reject(e);
       });
-      res.on('end', () => {
-        const { message } = JSON.parse(data);
-        resolve(message);
-      });
-    }).on('error', (e) => {
-      console.error(`problem with request: ${e.message}`);
-      reject(e);
+
+      req.write(JSON.stringify({ id: 1 }));
+      req.end()
     });
+  }
 
-    req.write(JSON.stringify({ id: 1 }));
-    req.end()
-  });
+  try {
+    await response();
+  } catch (err) {
+    fail(err);
+  }
+});
 
-  await response.then((msg) => msg).catch((err) => err);
-  
-})
-
-describe("CRUD Contacts", (done) => {
+describe("CRUD Contacts", () => {
   test("Should get all contacts", async () => {
     const agent = http.Agent({
       keepAlive: true,
@@ -110,112 +132,66 @@ describe("CRUD Contacts", (done) => {
       }
     }
 
-    const response = new Promise((resolve, reject) => {
-      const req = request(options, (res) => {
-        res.setEncoding('utf8');
-        let data = '';
-        res.on('data', (chunk) => {
-          data += chunk;
+    const response = () => {
+      return new Promise((resolve, reject) => {
+        const req = request(options, (res) => {
+          res.setEncoding('utf8');
+          let data = '';
+          res.on('data', (chunk) => {
+            data += chunk;
+          });
+          res.on('end', () => {
+            resolve({ statusCode: res.statusCode, data: data });
+          });
+        }).on('error', (e) => {
+          reject(e);
         });
-        res.on('end', () => {
-          resolve({ statusCode: res.statusCode, data: data });
-        });
-      }).on('error', (e) => {
-        console.error(`problem with request: ${e.message}`);
-        reject(e);
+        req.end()
       });
-      req.end()
-    });
+    }
 
-    const res = await response.then((obj) => obj).catch((err) => done(err));
-
+    const res = await response();
     expect(res.statusCode).toEqual(200);
   });
 
+  test("Should update a contact by id", async () => {
+    const agent = http.Agent({
+      keepAlive: true,
+      maxSockets: Infinity
+    });
 
-  // test("Should create a new contact", async () => {
-  //   const agent = http.Agent({
-  //     keepAlive: true,
-  //     maxSockets: Infinity
-  //   });
+    const options = {
+      agent: agent,
+      hostname: 'localhost',
+      port: 3000,
+      method: 'PUT',
+      path: '/',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(JSON.stringify(contactUpdate))
+      }
+    }
 
-  //   const options = {
-  //     agent: agent,
-  //     hostname: 'localhost',
-  //     port: 3000,
-  //     method: 'POST',
-  //     path: '/',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'Content-Length': Buffer.byteLength(JSON.stringify(contact))
-  //     }
-  //   }
+    const response = () => {
+      return new Promise((resolve, reject) => {
+        const req = request(options, (res) => {
+          res.setEncoding('utf8');
+          let data = '';
+          res.on('data', (chunk) => {
+            data += chunk;
+          });
+          res.on('end', () => {
+            const { message } = JSON.parse(data);
+            resolve(message);
+          });
+        }).on('error', (e) => {
+          reject(e);
+        });
 
-  //   const response = new Promise((resolve, reject) => {
-  //     const req = request(options, (res) => {
-  //       res.setEncoding('utf8');
-  //       let data = '';
-  //       res.on('data', (chunk) => {
-  //         data += chunk;
-  //       });
-  //       res.on('end', () => {
-  //         const { message } = JSON.parse(data);
-  //         resolve(message);
-  //       });
-  //     }).on('error', (e) => {
-  //       console.error(`problem with request: ${e.message}`);
-  //       reject(e);
-  //     });
-
-  //     req.write(JSON.stringify(contact));
-  //     req.end()
-  //   });
-
-  //   const msg = await response.then((msg) => msg).catch((err) => done(err));
-
-  //   expect(msg).toEqual('Contato cadastrado com sucesso.');
-  // });
-
-  // test("Should delete a contact by id", async (done) => {
-  //   const agent = http.Agent({
-  //     keepAlive: true,
-  //     maxSockets: Infinity
-  //   });
-
-  //   const options = {
-  //     agent: agent,
-  //     hostname: 'localhost',
-  //     port: 3000,
-  //     method: 'DELETE',
-  //     path: '/',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'Content-Length': Buffer.byteLength(JSON.stringify({ id: 1 }))
-  //     }
-  //   }
-
-  //   const response = new Promise((resolve, reject) => {
-  //     const req = request(options, (res) => {
-  //       res.setEncoding('utf8');
-  //       let data = '';
-  //       res.on('data', (chunk) => {
-  //         data += chunk;
-  //       });
-  //       res.on('end', () => {
-  //         const { message } = JSON.parse(data);
-  //         resolve(message);
-  //       });
-  //     }).on('error', (e) => {
-  //       console.error(`problem with request: ${e.message}`);
-  //       reject(e);
-  //     });
-
-  //     req.write(JSON.stringify({ id: 1 }));
-  //     req.end()
-  //   });
-
-  //   const msg = await response.then((msg) => msg).catch((err) => done(err));
-
-  //   expect(msg).toEqual('Contato deletado com sucesso.');
-  // });
+        req.write(JSON.stringify(contactUpdate));
+        req.end();
+      });
+    }
+    expect(await response()).toEqual("Contato atualizado com sucesso!");
+  });
 });

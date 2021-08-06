@@ -1,6 +1,6 @@
 {
   "name": "http-module",
-  "version": "1.0.0",
+  "version": ".0.0",
   "description": "Tentando entender como que funciona a mágica do Express",
   "main": "index.js",
   "type": "module",

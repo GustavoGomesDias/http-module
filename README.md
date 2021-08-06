@@ -8,10 +8,10 @@ Desmitificando a mágica do Express
 
 ---
 
-- [ ] CRUD Contact
+- [x] CRUD Contact
   - [x] GET
   - [x] POST
-  - [ ] PUT
+  - [x] PUT
   - [x] DELETE
 
 ---
@@ -21,11 +21,11 @@ Desmitificando a mágica do Express
 
 ---
 
-- [ ] Tests
+- [x] Tests
   - [x] Should get all contacts
   - [x] Should create a new contact
   - [x] Should delete a contact by id
-  - [ ] Should update a contact by id
+  - [x] Should update a contact by id
 
 - [ ] Refatoração
   - [ ] TypeScrypt
@@ -41,3 +41,7 @@ Desmitificando a mágica do Express
     <td align="center"><a href="https://github.com/GustavoGomesDias"><img src="https://github.com/GustavoGomesDias.png" width="100px;" alt="Profile"/><br /><sub><b>Gustavo</b></sub></a><br /><a href="https://github.com/GustavoGomesDias" title="Code">😎</a></td>
   <tr>
 </table>
+
+
+## LICENCE
+### MIT
