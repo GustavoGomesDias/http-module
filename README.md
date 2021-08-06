@@ -2,7 +2,7 @@
 Desmitificando a mágica do Express
 
 ## 📕 Sumário
-1. [Roadmap](https://github.com/GustavoGomesDias/http-module#1-roadmap)
+1. [Roadmap](https://github.com/GustavoGomesDias/http-module#1--roadmap)
 2. [Tecnologias usadas](https://github.com/GustavoGomesDias/http-module#2-tecnologias-usadas)
 3. [Como rodar](https://github.com/GustavoGomesDias/http-module#3-como-rodar)
 
@@ -36,7 +36,7 @@ Desmitificando a mágica do Express
   - [ ] Usar mongo ou algum banco de dados SQL sem ORM
   - [ ] SwaggerAPI (OpenAPI)
 
-## 2. Teccnologias usadas
+## 2. Tecnologias usadas
 - Node
 - Jest
 
