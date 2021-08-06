@@ -1,5 +1,0 @@
-/* 
-
-  Vai existir ainda, relaxa.
-
- */
