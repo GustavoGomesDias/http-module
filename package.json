@@ -3,9 +3,9 @@
   "version": ".0.0",
   "description": "Tentando entender como que funciona a mágica do Express",
   "main": "index.js",
-  "type": "module",
   "scripts": {
-    "dev": "nodemon app.js --ignore database.json",
+    "start": "ts-node src/app.ts",
+    "dev": "nodemon src/app.js --ignore database.json",
     "test": "jest --coverage --detectOpenHandles"
   },
   "repository": {

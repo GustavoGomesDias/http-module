@@ -1,10 +1,19 @@
 import http from 'http';
-import ContactController from './src/controllers/Contact.js';
+// eslint-disable-next-line import/extensions
+import ContactController from './controllers/Contact.js';
 
-const port = 3000;
+declare module 'http' {
+  // eslint-disable-next-line no-unused-vars
+  interface IncomingMessage {
+    body: object,
+  }
+}
 
-const app = http.createServer(async (req, res) => {
-  const { method } = req;
+const port: number = 3000;
+
+// eslint-disable-next-line max-len
+const app: http.Server = http.createServer(async (req: http.IncomingMessage, res): Promise<void> => {
+  const { method }: http.IncomingMessage = req;
 
   if (method === 'GET') {
     await ContactController.getAll(req, res);
@@ -12,14 +21,13 @@ const app = http.createServer(async (req, res) => {
   }
 
   if (method === 'POST') {
-    const chunks = [];
+    const chunks: Array<Buffer> = [];
     req.on('data', (chunk) => {
       chunks.push(chunk);
     });
 
-
     req.on('end', async () => {
-      const data = Buffer.concat(chunks);
+      const data: Buffer = Buffer.concat(chunks);
       req.body = JSON.parse(data.toString());
       await ContactController.store(req, res);
       res.end();
@@ -27,13 +35,13 @@ const app = http.createServer(async (req, res) => {
   }
 
   if (method === 'DELETE') {
-    const chunks = [];
+    const chunks: Array<Buffer> = [];
     req.on('data', (chunk) => {
       chunks.push(chunk);
     });
 
     req.on('end', async () => {
-      const data = Buffer.concat(chunks);
+      const data: Buffer = Buffer.concat(chunks);
       req.body = JSON.parse(data.toString());
       await ContactController.delete(req, res);
       res.end();
@@ -41,7 +49,7 @@ const app = http.createServer(async (req, res) => {
   }
 
   if (method === 'PUT') {
-    const chunks = [];
+    const chunks: Array<Buffer> = [];
     req.on('data', (chunk) => {
       chunks.push(chunk);
     });
@@ -53,9 +61,8 @@ const app = http.createServer(async (req, res) => {
       res.end();
     });
   }
-
 });
 
-app.listen(port, () => {
+app.listen(port, (): void => {
   console.log(`Server rodando na porta ${port}`);
 });
