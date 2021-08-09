@@ -1,30 +1,32 @@
-import Contact from '../repositories/Contact.js';
+import { IncomingMessage, ServerResponse } from 'http';
+
+import IContactController from './IContractController.js';
+import Contact from '../repositories/ContactRepository.js';
+
 import {
   validateEmail,
   validateFiled,
-  validateGitHub
-} from '../validations/validations.js';
+  validateGitHub,
+} from '../validations/validations';
 
-class ContactController {
-  repo
+class ContactController implements IContactController {
+  repo: Contact
 
   constructor() {
     this.repo = new Contact();
   }
 
-  async getAll(req, res) {
+  async getAll(res: ServerResponse){
     try {
       const contacts = await this.repo.getAllContacts();
       if (contacts.length > 0) {
-        
         return res.writeHead(200, {
           'Content-Type': 'application/json',
         }).write(JSON.stringify(contacts));
-      } else {
-        return res.writeHead(404, {
-          'Content-Type': 'application/json',
-        }).write(JSON.stringify({ message: 'Não há usuários cadastrados.' }));
       }
+      return res.writeHead(404, {
+        'Content-Type': 'application/json',
+      }).write(JSON.stringify({ message: 'Não há usuários cadastrados.' }));
     } catch (err) {
       console.log(err);
       return res.writeHead(500, {
@@ -33,9 +35,11 @@ class ContactController {
     }
   }
 
-  async store(req, res) {
+  async store(req: IncomingMessage, res: ServerResponse) {
     try {
-      const { name, description, email, github} = req.body;
+      const {
+        name, description, email, github,
+      } = req.body;
 
       if (
         validateFiled(name) || validateFiled(email) || validateFiled(github) || validateFiled(description)
@@ -62,7 +66,6 @@ class ContactController {
       return res.writeHead(201, {
         'Content-Type': 'application/json',
       }).write(JSON.stringify({ message: 'Contato cadastrado com sucesso.' }));
-
     } catch (err) {
       console.log(err);
       return res.writeHead(500, {
@@ -71,16 +74,16 @@ class ContactController {
     }
   }
 
-  async update(req, res) {
+  async update(req: IncomingMessage, res: ServerResponse) {
     try {
-      const { nome, description, email, github } = req.body;
+      const { email, github } = req.body;
 
       if (validateFiled(github) && validateFiled(email)) {
         const verifyGithub = await validateGitHub(github);
         if (!verifyGithub) {
           return res.writeHead(400, {
             'Content-Type': 'application/json',
-          }).write(JSON.stringify({ error: 'Usário do GitHub não existe.' })); 
+          }).write(JSON.stringify({ error: 'Usário do GitHub não existe.' }));
         }
 
         if (!validateEmail(email)) {
@@ -101,14 +104,14 @@ class ContactController {
         'Content-Type': 'application/json',
       }).write(JSON.stringify({ message: 'Contato atualizado com sucesso!' }));
     } catch (err) {
-      console.log(err)
+      console.log(err);
       return res.writeHead(500, {
         'Content-Type': 'application/json',
       }).write(JSON.stringify({ error: 'Error interno.' }));
     }
   }
 
-  async delete(req, res) {
+  async delete(req: IncomingMessage, res: ServerResponse) {
     try {
       const contacts = await this.repo.deleteContact(req.body.id);
 
@@ -121,7 +124,7 @@ class ContactController {
       return res.writeHead(200, {
         'Content-Type': 'application/json',
       }).write(JSON.stringify({ message: 'Contato deletado com sucesso.' }));
-    } catch(err) {
+    } catch (err) {
       console.log(err);
       return res.writeHead(500, {
         'Content-Type': 'application/json',

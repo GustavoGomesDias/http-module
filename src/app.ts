@@ -1,28 +1,33 @@
 import http from 'http';
-// eslint-disable-next-line import/extensions
-import ContactController from './controllers/Contact.js';
+import ContactController from './controllers/ContactController';
 
 declare module 'http' {
   // eslint-disable-next-line no-unused-vars
   interface IncomingMessage {
-    body: object,
+    body: {
+      id?: number;
+      name?: string;
+      lastName?: string;
+      description?: string;
+      email?: string;
+      github?: string;
+    };
   }
 }
 
 const port: number = 3000;
 
-// eslint-disable-next-line max-len
-const app: http.Server = http.createServer(async (req: http.IncomingMessage, res): Promise<void> => {
+const app: http.Server = http.createServer(async (req, res) => {
   const { method }: http.IncomingMessage = req;
 
   if (method === 'GET') {
-    await ContactController.getAll(req, res);
+    await ContactController.getAll(res);
     res.end();
   }
 
   if (method === 'POST') {
     const chunks: Array<Buffer> = [];
-    req.on('data', (chunk) => {
+    req.on('data', (chunk: Buffer) => {
       chunks.push(chunk);
     });
 
@@ -36,7 +41,7 @@ const app: http.Server = http.createServer(async (req: http.IncomingMessage, res
 
   if (method === 'DELETE') {
     const chunks: Array<Buffer> = [];
-    req.on('data', (chunk) => {
+    req.on('data', (chunk: Buffer) => {
       chunks.push(chunk);
     });
 
@@ -50,7 +55,7 @@ const app: http.Server = http.createServer(async (req: http.IncomingMessage, res
 
   if (method === 'PUT') {
     const chunks: Array<Buffer> = [];
-    req.on('data', (chunk) => {
+    req.on('data', (chunk: Buffer) => {
       chunks.push(chunk);
     });
 

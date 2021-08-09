@@ -1,11 +1,11 @@
 import https from 'https';
 
-export const validateFiled = (field) => field === '' || field === ' ' || field === undefined || field === null;
+export const validateFiled = (field: string | undefined) => field === '' || field === ' ' || field === undefined || field === null;
 
-export const validateEmail = (email) => email.includes('@');
+export const validateEmail = (email: string | undefined) => email && email.includes('@');
 
-export const validateGitHub = async (gitHubUser) => {
-  const agent = https.Agent({
+export const validateGitHub = async (gitHubUser: string | undefined) => {
+  const agent = new https.Agent({
     keepAlive: true,
     maxSockets: Infinity
   });
@@ -22,16 +22,15 @@ export const validateGitHub = async (gitHubUser) => {
   try {
     await new Promise((resolve, reject) => {
       https.get(options, (res) => {
-        let data = '';
+        let data: string = '';
         res.on('data', (chunk) => {
           data += chunk;
         });
-    
+
         res.on('end', () => {
-          // console.log(JSON.parse(data));
           const { message } = JSON.parse(data);
           if (message) return reject(message);
-          resolve();
+          resolve(data);
         });
       }).on("error", reject).end();
     });
