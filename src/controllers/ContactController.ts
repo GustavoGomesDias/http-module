@@ -2,6 +2,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 
 import IContactController from './IContractController';
 import Contact from '../repositories/ContactRepository';
+import responseFunction from '../utils/response';
 
 import {
   validateEmail,
@@ -20,18 +21,13 @@ class ContactController implements IContactController {
     try {
       const contacts = await this.repo.getAllContacts();
       if (contacts.length > 0) {
-        return res.writeHead(200, {
-          'Content-Type': 'application/json',
-        }).write(JSON.stringify(contacts));
+        return responseFunction(res, 200, contacts, 'message');
       }
-      return res.writeHead(404, {
-        'Content-Type': 'application/json',
-      }).write(JSON.stringify({ message: 'Não há usuários cadastrados.' }));
+
+      return responseFunction(res, 404, 'Não há usuários cadastrados.', 'error');
     } catch (err) {
       console.log(err);
-      return res.writeHead(500, {
-        'Content-Type': 'application/json',
-      }).write(JSON.stringify({ error: 'Error interno.' }));
+      return responseFunction(res, 500, 'Erro no servidor.', 'error');
     }
   }
 
@@ -44,33 +40,22 @@ class ContactController implements IContactController {
       if (
         validateFiled(name) || validateFiled(email) || validateFiled(github) || validateFiled(description)
       ) {
-        return res.writeHead(400, {
-          'Content-Type': 'application/json',
-        }).write(JSON.stringify({ error: 'Nome, email e o usuário do GitHub são obrigatórios.' }));
+        return responseFunction(res, 400, 'Nome, email e o usuário do GitHub são obrigatórios.', 'error');
       }
 
       if (!validateEmail(email)) {
-        return res.writeHead(400, {
-          'Content-Type': 'application/json',
-        }).write(JSON.stringify({ error: 'E-mail inválido.' }));
+        return responseFunction(res, 400, 'E-mail inválido.', 'error');
       }
       const verifyGithub = await validateGitHub(github);
       if (!verifyGithub) {
-        return res.writeHead(400, {
-          'Content-Type': 'application/json',
-        }).write(JSON.stringify({ error: 'Usário do GitHub não existe.' }));
+        return responseFunction(res, 400, 'Usário do GitHub não existe.', 'error');
       }
 
       await this.repo.addNewContact(req.requiredBody);
-
-      return res.writeHead(201, {
-        'Content-Type': 'application/json',
-      }).write(JSON.stringify({ message: 'Contato cadastrado com sucesso.' }));
+      return responseFunction(res, 201, 'Contato cadastrado com sucesso.', 'message');
     } catch (err) {
       console.log(err);
-      return res.writeHead(500, {
-        'Content-Type': 'application/json',
-      }).write(JSON.stringify({ error: 'Error interno.' }));
+      return responseFunction(res, 500, 'Erro no servidor.', 'error');
     }
   }
 
@@ -78,36 +63,25 @@ class ContactController implements IContactController {
     try {
       const { email, github } = req.body;
 
-      if (validateFiled(github) && validateFiled(email)) {
+      if (!validateFiled(github) && !validateFiled(email)) {
         const verifyGithub = await validateGitHub(github);
         if (!verifyGithub) {
-          return res.writeHead(400, {
-            'Content-Type': 'application/json',
-          }).write(JSON.stringify({ error: 'Usário do GitHub não existe.' }));
+          return responseFunction(res, 400, 'Usário do GitHub não existe.', 'error');
         }
 
         if (!validateEmail(email)) {
-          return res.writeHead(400, {
-            'Content-Type': 'application/json',
-          }).write(JSON.stringify({ error: 'E-mail inválido.' }));
+          return responseFunction(res, 400, 'E-mail inválido.', 'error');
         }
       }
 
       const contact = await this.repo.editContact(req.body);
       if (!contact) {
-        return res.writeHead(404, {
-          'Content-Type': 'application/json',
-        }).write(JSON.stringify({ message: 'Contato não encontrado.' }));
+        return responseFunction(res, 404, 'Contato não encontrado.', 'error');
       }
-
-      return res.writeHead(200, {
-        'Content-Type': 'application/json',
-      }).write(JSON.stringify({ message: 'Contato atualizado com sucesso!' }));
+      return responseFunction(res, 200, 'Contato atualizado com sucesso!', 'message');
     } catch (err) {
       console.log(err);
-      return res.writeHead(500, {
-        'Content-Type': 'application/json',
-      }).write(JSON.stringify({ error: 'Error interno.' }));
+      return responseFunction(res, 500, 'Erro no servidor.', 'error');
     }
   }
 
@@ -116,19 +90,12 @@ class ContactController implements IContactController {
       const contacts = await this.repo.deleteContact(req.body.id);
 
       if (!contacts) {
-        return res.writeHead(404, {
-          'Content-Type': 'application/json',
-        }).write(JSON.stringify({ message: 'Contato não encontrado.' }));
+        return responseFunction(res, 404, 'Contato não encontrado.', 'error');
       }
-
-      return res.writeHead(200, {
-        'Content-Type': 'application/json',
-      }).write(JSON.stringify({ message: 'Contato deletado com sucesso.' }));
+      return responseFunction(res, 200, 'Contato deletado com sucesso.', 'message');
     } catch (err) {
       console.log(err);
-      return res.writeHead(500, {
-        'Content-Type': 'application/json',
-      }).write(JSON.stringify({ error: 'Error interno.' }));
+      return responseFunction(res, 500, 'Erro no servidor.', 'error');
     }
   }
 }

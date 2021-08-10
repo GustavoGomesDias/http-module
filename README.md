@@ -37,7 +37,7 @@ Desmitificando a mágica do Express
   - [ ] Aprimorar testes
   - [ ] TypeScrypt
     - [x] Código principal
-    - [ ] Testes;
+    - [ ] Testes
   - [ ] Usar mongo ou algum banco de dados SQL sem ORM
 
 ## 2. Tecnologias usadas
@@ -62,7 +62,7 @@ Caso você queira voltar para o js, você pode dar um hard reset até o último 
 ```bash
 git reset --hard 2173d98c4d766eb321ea8a205661cf480584c51c
 ```
-VocÊ também precisará forçar o commit (se for commitar), o comando é:
+Você também precisará forçar o commit (se for commitar), o comando é:
 ```bash
 git push -f origin main
 ```
