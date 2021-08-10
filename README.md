@@ -34,7 +34,10 @@ Desmitificando a mágica do Express
 
 - [ ] Refatoração
   - [x] ES Lint
+  - [ ] Aprimorar testes
   - [ ] TypeScrypt
+    - [x] Código principal
+    - [ ] Testes;
   - [ ] Usar mongo ou algum banco de dados SQL sem ORM
 
 ## 2. Tecnologias usadas
