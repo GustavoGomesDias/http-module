@@ -12,6 +12,14 @@ declare module 'http' {
       email?: string;
       github?: string;
     };
+
+    requiredBody: {
+      name: string;
+      lastName: string;
+      description: string;
+      email: string;
+      github: string;
+    };
   }
 }
 
@@ -33,7 +41,7 @@ const app: http.Server = http.createServer(async (req, res) => {
 
     req.on('end', async () => {
       const data: Buffer = Buffer.concat(chunks);
-      req.body = JSON.parse(data.toString());
+      req.requiredBody = JSON.parse(data.toString());
       await ContactController.store(req, res);
       res.end();
     });

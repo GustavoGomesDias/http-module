@@ -1,7 +1,7 @@
 import { IncomingMessage, ServerResponse } from 'http';
 
-import IContactController from './IContractController.js';
-import Contact from '../repositories/ContactRepository.js';
+import IContactController from './IContractController';
+import Contact from '../repositories/ContactRepository';
 
 import {
   validateEmail,
@@ -16,7 +16,7 @@ class ContactController implements IContactController {
     this.repo = new Contact();
   }
 
-  async getAll(res: ServerResponse){
+  public async getAll(res: ServerResponse){
     try {
       const contacts = await this.repo.getAllContacts();
       if (contacts.length > 0) {
@@ -35,11 +35,11 @@ class ContactController implements IContactController {
     }
   }
 
-  async store(req: IncomingMessage, res: ServerResponse) {
+  public async store(req: IncomingMessage, res: ServerResponse) {
     try {
       const {
         name, description, email, github,
-      } = req.body;
+      } = req.requiredBody;
 
       if (
         validateFiled(name) || validateFiled(email) || validateFiled(github) || validateFiled(description)
@@ -61,7 +61,7 @@ class ContactController implements IContactController {
         }).write(JSON.stringify({ error: 'Usário do GitHub não existe.' }));
       }
 
-      await this.repo.addNewContact(req.body);
+      await this.repo.addNewContact(req.requiredBody);
 
       return res.writeHead(201, {
         'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ class ContactController implements IContactController {
     }
   }
 
-  async update(req: IncomingMessage, res: ServerResponse) {
+  public async update(req: IncomingMessage, res: ServerResponse) {
     try {
       const { email, github } = req.body;
 
@@ -111,7 +111,7 @@ class ContactController implements IContactController {
     }
   }
 
-  async delete(req: IncomingMessage, res: ServerResponse) {
+  public async delete(req: IncomingMessage, res: ServerResponse) {
     try {
       const contacts = await this.repo.deleteContact(req.body.id);
 

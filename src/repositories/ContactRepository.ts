@@ -2,7 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 
 import Contact from '../models/Contact';
-import IContactRepository from './IContactRepository.js';
+import IContactRepository from './IContactRepository';
 
 export default class ContactRepository implements IContactRepository {
 
@@ -40,6 +40,7 @@ export default class ContactRepository implements IContactRepository {
   public async editContact(infos: { id?: number, name?: string, lastName?: string, description?: string, email?: string, github?: string }) {
     try {
       const { id , name = "", lastName = "", description = "", email = "", github = "" } = infos;
+
       if (id === undefined) return undefined;
 
       const contacts = await this.getAllContacts();
