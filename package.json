@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node src/app.ts",
-    "dev": "nodemon src/app.js --ignore database.json",
     "test": "jest --coverage --detectOpenHandles"
   },
   "repository": {
@@ -29,8 +28,6 @@
     "eslint-import-resolver-typescript": "^2.4.0",
     "eslint-plugin-import": "^2.23.4",
     "jest": "^27.0.6",
-    "nodemon": "^2.0.7",
-    "sucrase": "^3.18.1",
     "ts-node": "^10.1.0",
     "typescript": "^4.3.5"
   }
