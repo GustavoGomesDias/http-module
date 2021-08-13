@@ -5,6 +5,9 @@ export const validateFiled = (field: string | undefined) => field === '' || fiel
 export const validateEmail = (email: string | undefined) => email && email.includes('@');
 
 export const validateGitHub = async (gitHubUser: string | undefined) => {
+  if (!gitHubUser) return false;
+
+
   const agent = new https.Agent({
     keepAlive: true,
     maxSockets: Infinity
